@@ -1,8 +1,10 @@
 package com.example.nxtstayz.service;
 
 import com.example.nxtstayz.model.Hotel;
+import com.example.nxtstayz.model.Room;
 import com.example.nxtstayz.repository.HotelJpaRepository;
 import com.example.nxtstayz.repository.HotelRepository;
+import com.example.nxtstayz.repository.RoomJpaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -67,5 +69,15 @@ public class HotelJpaService implements HotelRepository {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
         throw new ResponseStatusException(HttpStatus.NO_CONTENT);
+    }
+
+    @Override
+    public List<Room> getHotelRooms(int hotelId) {
+        try {
+            Hotel hotel = hotelJpaRepository.findById(hotelId).get();
+            return roomJpaRepository.findByHotel(hotel);
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        }
     }
 }
